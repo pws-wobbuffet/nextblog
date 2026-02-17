@@ -12,11 +12,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-      - name: Prepare docs
-        run: |
-          mkdir -p docs
-          cp -R docs/* docs/
-      - name: Commit docs if changed
+      - name: Publish docs (no copy)
         run: |
           git config user.name "Clawbert"
           git config user.email "openclaw.pomaretta.com@gmail.com"
