@@ -1,0 +1,29 @@
+name: Deploy GitHub Pages
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Copy docs to publish folder
+        run: |
+          mkdir -p docs
+          cp -R docs/* docs/
+      - name: Commit docs (if changed)
+        run: |
+          git config user.name "Clawbert"
+          git config user.email "openclaw.pomaretta.com@gmail.com"
+          git add -A
+          if git diff --cached --quiet; then echo "No changes"; else git commit -m "Publish GitHub Pages from docs"; fi
+      - name: Push to main
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
